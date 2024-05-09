@@ -1,0 +1,31 @@
+[user]
+	name = solbero
+	email = njosol@pm.me
+[core]
+	excludesfile = /home/njord/.gitignore
+	editor = code --wait
+[pull]
+	ff = only
+[rebase]
+	autosquash = true
+[init]
+	defaultBranch = main
+[merge]
+	conflictstyle = diff3
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+[rerere]
+	enabled = true
+	autoupdate = true
+[diff]
+	mnemonicPrefix = true
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[alias]
+	aliases = !git config --get-regexp alias | sed -re 's/alias\\.(\\S*)\\s(.*)$/\\1 = \\2/g'
+	ff = merge --ff-only
+	undo = reset --hard @{1}
+	uncommit = reset --soft HEAD~1
+	push-with-lease = push --force-with-lease
