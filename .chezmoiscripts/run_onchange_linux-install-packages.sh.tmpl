@@ -1,0 +1,13 @@
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+    {{ $sudo = "" -}}
+{{ end -}}
+
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ if eq .chezmoi.os "linux" -}}
+    {{ $packages := .packages.linux -}}
+    {{ $sudo }}dnf install -y {{ $packages | join " " }}
+{{ end -}}

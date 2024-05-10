@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+# Set fish as the default shell
+if [ -f {{ .chezmoi.homeDir }}/.bashrc ]; then
+    echo -e '\n# Use fish in place of bash\n# keep this line at the bottom of ~/.bashrc\nif [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then\n\tshopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''\n\texec fish $LOGIN_OPTION\nfi' >> {{ .chezmoi.homeDir }}/.bashrc
+fi
