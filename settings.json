@@ -50,6 +50,9 @@
   "terminal.integrated.allowChords": false,
   // Extensions
   "latex-workshop.intellisense.citation.backend": "biblatex",
+  "cSpell.allowCompoundWords": true,
+  "cSpell.language": "en-US",
+  "cSpell.diagnosticLevel": "Information",
   "github.copilot.enable": {
     "*": true
   },
