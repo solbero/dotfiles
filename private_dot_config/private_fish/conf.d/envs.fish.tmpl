@@ -9,7 +9,7 @@ else
   set -gx VISUAL vi
 end
 
-# Add my custom functions to be autoloaded
-if test -d $__fish_config_dir/custom_functions.d
-  set -gp fish_function_path $__fish_config_dir/custom_functions.d
+# Add bat configuration
+if type -q bat
+  set -gx BAT_THEME Dracula
 end

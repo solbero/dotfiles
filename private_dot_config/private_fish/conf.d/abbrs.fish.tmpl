@@ -1,0 +1,23 @@
+# dnf
+if type -q dnf
+{{- if ne .chezmoi.username "root" }}
+  abbr dnfi 'sudo dnf install'
+  abbr dnfr 'sudo dnf remove'
+  abbr dnfu 'sudo dnf update'
+{{- else }}
+  abbr dnfi 'dnf install'
+  abbr dnfr 'dnf remove'
+  abbr dnfu 'dnf update'
+{{- end }}
+end
+
+# chezmoi
+if type -q chezmoi
+  abbr cz 'chezmoi'
+  abbr cza 'chezmoi apply'
+  abbr czu 'chezmoi update'
+  abbr cze 'chezmoi edit'
+  abbr czs 'chezmoi status'
+  abbr czc 'chezmoi cd'
+  abbr czch 'chezmoi chattr'
+end
