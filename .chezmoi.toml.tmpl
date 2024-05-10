@@ -1,0 +1,15 @@
+{{- $headless := promptBoolOnce . "headless" "Is this machine headless?" -}}
+{{- $personal := promptBoolOnce . "personal" "Is this machine personal?" -}}
+
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+  {{- $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{- $email := "njosol@pm.me" -}}
+
+[data]
+  email = {{ $email | quote }}
+  headless = {{ $headless }}
+  personal = {{ $personal }}
+  osid = {{ $osID | quote }}

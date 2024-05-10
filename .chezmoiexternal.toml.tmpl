@@ -1,7 +1,8 @@
+{{- $nanorcVersionTag := (gitHubLatestRelease "scopatz/nanorc").TagName }}
 [".nano"]
-type = "archive"
-url = "https://github.com/scopatz/nanorc/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "168h"
-include = ["*/*.nanorc"]
+  type = "archive"
+  url = "https://github.com/scopatz/nanorc/releases/download/{{ $nanorcVersionTag }}/nanorc-{{ $nanorcVersionTag  }}.tar.gz"
+  exact = true
+  stripComponents = 1
+  refreshPeriod = "168h"
+  include = ["*/*.nanorc"]
