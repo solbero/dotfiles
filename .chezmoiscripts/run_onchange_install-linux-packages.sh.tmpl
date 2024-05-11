@@ -7,7 +7,11 @@
 
 #!/bin/bash
 
+# .local/share/chezmoi/.chezmoidata/packages.toml hash: {{ include ".chezmoidata/packages.toml" | sha256sum }}
+
 set -eufo pipefail
+
+echo -e "\0033[0;32m>>>>> Begin installing linux packages <<<<<\033[0m"
 
 {{ $packages := .packages.linux -}}
 {{ if not .headless -}}
@@ -17,5 +21,7 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 {{- end }}
 
 {{ $sudo }}dnf install -y {{ $packages | join " " }}
+
+echo -e "\0033[0;32m>>>>> Finish installing linux packages <<<<<\033[0m"
 
 {{- end -}}

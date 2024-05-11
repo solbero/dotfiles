@@ -1,0 +1,17 @@
+#!/bin/fish
+
+set -eufo pipefail
+
+echo -e "\0033[0;32m>>>>> Begin setting up fish completions <<<<<\033[0m"
+
+if test -q fish
+    echo "Setting up fish completions"
+    fish_update_completions
+end
+
+if type -q chezmoi
+  echo "Setting up chezmoi completions"
+  chezmoi completion fish --output=$__fish_config_dir/completions/chezmoi.fish
+end
+
+echo -e "\0033[0;32m>>>>> Finish setting up fish completions <<<<<\033[0m"
