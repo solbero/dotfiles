@@ -1,10 +1,8 @@
 #!/bin/fish
 
-set -eufo pipefail
-
 echo -e "\0033[0;32m>>>>> Begin setting up fish completions <<<<<\033[0m"
 
-if test -q fish
+if type -q fish
     echo "Setting up fish completions"
     fish_update_completions
 end
