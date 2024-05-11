@@ -1,5 +1,12 @@
 {{ if eq .chezmoi.os "linux" -}}
 
+{{ $packages := .packages.linux -}}
+
+{{ $installCommand := "dnf install -y " -}}
+{{ if eq .osid "linux-fedora" -}}
+    {{ $installCommand = "dnf install -y " -}}
+{{ end -}}
+
 {{ $sudo := "sudo " -}}
 {{ if eq .chezmoi.username "root" -}}
     {{ $sudo = "" -}}
@@ -7,21 +14,19 @@
 
 #!/bin/bash
 
-# .local/share/chezmoi/.chezmoidata/packages.toml hash: {{ include ".chezmoidata/packages.toml" | sha256sum }}
-
 set -eufo pipefail
 
-echo -e "\0033[0;32m>>>>> Begin installing linux packages <<<<<\033[0m"
+# .local/share/chezmoi/.chezmoidata/packages.toml hash: {{ include ".chezmoidata/packages.toml" | sha256sum }}
 
-{{ $packages := .packages.linux -}}
 {{ if not .headless -}}
-{{   $packages = mustAppend $packages "code" -}}
-{{   $sudo }}rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    {{ $packages = mustAppend $packages "code" -}}
+    {{ if eq .osid "linux-fedora" -}}
+    {{ $sudo }}rpm --import https://packages.microsoft.com/keys/microsoft.asc
 echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+    {{- end }}
 {{- end }}
 
-{{ $sudo }}dnf install -y {{ $packages | join " " }}
-
-echo -e "\0033[0;32m>>>>> Finish installing linux packages <<<<<\033[0m"
+{{ $sudo }}{{ $installCommand }}{{ $packages | join " " }}
 
 {{- end -}}
+

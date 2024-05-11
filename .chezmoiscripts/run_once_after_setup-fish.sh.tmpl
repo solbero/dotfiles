@@ -1,15 +1,10 @@
 #!/bin/fish
 
-echo -e "\0033[0;32m>>>>> Begin setting up fish shell <<<<<\033[0m"
-
-# Set fish as the default shell
 if test -f {{ .chezmoi.homeDir }}/.bashrc
-    echo -e '\n# Use fish in place of bash\n# keep this line at the bottom of ~/.bashrc\nif [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then\n\tshopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''\n\texec fish $LOGIN_OPTION\nfi' >> {{ .chezmoi.homeDir }}/.bashrc
+    echo -e '\n# Use fish in place of bash\nif [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then\n\tshopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''\n\texec fish $LOGIN_OPTION\nfi' >> {{ .chezmoi.homeDir }}/.bashrc
 end
 
-# Install and setup fisher, if not exist
 if not type -q fisher
     curl -sL https://git.io/fisher | source && fisher update
 end
 
-echo -e "\0033[0;32m>>>>> Finish setting up fish shell <<<<<\033[0m"
