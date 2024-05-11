@@ -1,0 +1,11 @@
+[packages]
+    linux = [
+      "bat",
+      "eza",
+      "fd-find",
+      "fish",
+      "fzf",
+      "git",
+      "tldr",
+      "zoxide",
+    ]

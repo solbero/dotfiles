@@ -9,5 +9,5 @@ set -eufo pipefail
 
 {{ if eq .chezmoi.os "linux" -}}
     {{ $packages := .packages.linux -}}
-    {{ $sudo }}dnf install -y {{ $packages | join " " }}
+    {{ $sudo }}dnf install -y {{ $packages | join " " }} > /dev/null
 {{ end -}}

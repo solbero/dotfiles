@@ -1,8 +1,14 @@
-#!/bin/bash
+#!/bin/fish
 
 set -eufo pipefail
 
 # Set fish as the default shell
-if [ -f {{ .chezmoi.homeDir }}/.bashrc ]; then
+if test -f {{ .chezmoi.homeDir }}/.bashrc
     echo -e '\n# Use fish in place of bash\n# keep this line at the bottom of ~/.bashrc\nif [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then\n\tshopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''\n\texec fish $LOGIN_OPTION\nfi' >> {{ .chezmoi.homeDir }}/.bashrc
-fi
+end
+
+# Install and setup fisher, if not exist
+if not type -q fisher
+    if status is-interactive && ! functions --query fisher
+        curl -sL https://git.io/fisher | source && fisher update
+end
