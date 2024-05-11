@@ -1,6 +1,7 @@
 # Disable fish greeting
 set -g fish_greeting
 
+# Set default editor
 if type -q nano
   set -gx EDITOR nano
   set -gx VISUAL nano
@@ -9,7 +10,7 @@ else
   set -gx VISUAL vi
 end
 
-# Add bat configuration
+# Set bat configuration
 if type -q bat
   set -gx BAT_THEME Dracula
 end

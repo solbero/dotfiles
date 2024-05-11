@@ -1,22 +1,51 @@
 {{ $sudo := "sudo " -}}
-{{ if eq .chezmoi.username "root" -}}
-  {{ $sudo = "" -}}
+  {{ if eq .chezmoi.username "root" -}}
+      {{ $sudo = "" -}}
 {{ end -}}
 
 # dnf
 if type -q dnf
-  abbr dnfi '{{ $sudo }}dnf install'
-  abbr dnfr '{{ $sudo }}sudo dnf remove'
-  abbr dnfu '{{ $sudo }}sudo dnf update'
+    abbr dnfi '{{ $sudo }}dnf install'
+    abbr dnfr '{{ $sudo }}sudo dnf remove'
+    abbr dnfu '{{ $sudo }}sudo dnf update'
 end
 
 # chezmoi
 if type -q chezmoi
-  abbr cz 'chezmoi'
-  abbr cza 'chezmoi apply'
-  abbr czu 'chezmoi update'
-  abbr cze 'chezmoi edit'
-  abbr czs 'chezmoi status'
-  abbr czc 'chezmoi cd'
-  abbr czch 'chezmoi chattr'
+    abbr c 'chezmoi'
+    abbr ca 'chezmoi apply'
+    abbr cu 'chezmoi update'
+    abbr ce 'chezmoi edit'
+    abbr cs 'chezmoi status'
+    abbr cc 'chezmoi cd'
+    abbr ci 'chezmoi init'
+    abbr cch 'chezmoi chattr'
+    abbr cet 'chezmoi execute-template'
+    abbr cdi 'chezmoi diff'
+end
+
+# git
+if type -q git
+    abbr g 'git'
+    abbr ga 'git add'
+    abbr gaa 'git add --all'
+    abbr gb 'git branch'
+    abbr gc 'git commit'
+    abbr gca 'git commit --amend'
+    abbr gcm 'git commit -m'
+    abbr gco 'git checkout'
+    abbr gd 'git diff'
+    abbr gf 'git fetch'
+    abbr gl 'git log'
+    abbr gp 'git pull'
+    abbr gps 'git push'
+    abbr gr 'git rebase'
+    abbr gs 'git status'
+    abbr gss 'git stash'
+    abbr gsp 'git stash pop'
+    abbr gsa 'git stash apply'
+    abbr gsd 'git stash drop'
+    abbr gsr 'git stash list'
+    abbr gss 'git stash show'
+    abbr gss 'git stash clear'
 end
