@@ -1,11 +1,12 @@
 [packages]
     linux = [
-      "bat",
-      "eza",
-      "fd-find",
-      "fish",
-      "fzf",
-      "git",
-      "tldr",
-      "zoxide",
+        "bat",
+        "eza",
+        "fd-find",
+        "fish",
+        "fzf",
+        "git",
+        "ripgrep",
+        "tldr",
+        "zoxide",
     ]
