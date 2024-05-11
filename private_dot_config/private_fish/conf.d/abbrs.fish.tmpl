@@ -6,22 +6,24 @@
 # dnf
 if type -q dnf
     abbr dnfi '{{ $sudo }}dnf install'
-    abbr dnfr '{{ $sudo }}sudo dnf remove'
-    abbr dnfu '{{ $sudo }}sudo dnf update'
+    abbr dnfr '{{ $sudo }}dnf remove'
+    abbr dnfu '{{ $sudo }}dnf update'
 end
 
 # chezmoi
 if type -q chezmoi
     abbr c 'chezmoi'
     abbr ca 'chezmoi apply'
-    abbr cu 'chezmoi update'
-    abbr ce 'chezmoi edit'
-    abbr cs 'chezmoi status'
-    abbr cc 'chezmoi cd'
-    abbr ci 'chezmoi init'
-    abbr cch 'chezmoi chattr'
-    abbr cet 'chezmoi execute-template'
+    abbr cad 'chezmoi add'
+    abbr ccd 'chezmoi cd'
     abbr cdi 'chezmoi diff'
+    abbr ce 'chezmoi edit'
+    abbr ci 'chezmoi init'
+    abbr cm 'chezmoi merge'
+    abbr cs 'chezmoi status'
+    abbr ctt 'chezmoi chattr'
+    abbr cu 'chezmoi update'
+    abbr cxt 'chezmoi execute-template'
 end
 
 # git
@@ -32,6 +34,7 @@ if type -q git
     abbr gb 'git branch'
     abbr gc 'git commit'
     abbr gca 'git commit --amend'
+    abbr gcf 'git commit --fixup'
     abbr gcm 'git commit -m'
     abbr gco 'git checkout'
     abbr gd 'git diff'
@@ -40,12 +43,14 @@ if type -q git
     abbr gp 'git pull'
     abbr gps 'git push'
     abbr gr 'git rebase'
+    abbr gra 'git rebase --abort'
+    abbr grc 'git rebase --continue'
+    abbr gri 'git rebase --interactive'
+    abbr grs 'git rebase --skip'
     abbr gs 'git status'
-    abbr gss 'git stash'
-    abbr gsp 'git stash pop'
-    abbr gsa 'git stash apply'
-    abbr gsd 'git stash drop'
-    abbr gsr 'git stash list'
-    abbr gss 'git stash show'
-    abbr gss 'git stash clear'
+    abbr gst 'git stash'
+    abbr gsta 'git stash apply'
+    abbr gstd 'git stash drop'
+    abbr gstl 'git stash list'
+    abbr gsts 'git stash show'
 end
