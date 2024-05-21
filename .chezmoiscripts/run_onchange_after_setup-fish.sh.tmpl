@@ -1,0 +1,34 @@
+{{ if eq .chezmoi.os "linux" -}}
+
+#!{{ lookPath "fish" }}
+
+# Set fish as the default interactive shell
+{{ $bashrcdPath := print .chezmoi.homeDir "/.bashrc.d" -}}
+if not test -e {{ $bashrcdPath }}/fish.sh
+    mkdir -p {{ $bashrcdPath }} && touch {{ $bashrcdPath }}/fish.sh
+    echo -e  '# Use fish in place of bash\nif [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then\n\tshopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''\n\texec fish $LOGIN_OPTION\nfi\n' >> {{ $bashrcdPath }}/fish.sh
+end
+
+# Install fisher plugin manager and update plugins
+{{ if lookPath "fisher" -}}
+curl -sL https://git.io/fisher | source && fisher update
+{{- end }}
+
+# Update fish completions from man pages
+fish_update_completions
+
+# Check if fish completions folder exist, create if not
+if not test -e $__fish_config_dir/completions
+    mkdir -p $__fish_config_dir/completions
+end
+
+# Add chexmoi completions
+{{ if lookPath "chezmoi" -}}
+chezmoi completion fish --output=$__fish_config_dir/completions/chezmoi.fish
+{{- end }}
+
+{{ if lookPath "pipx" -}}
+# Add pipx completions
+register-python-argcomplete --shell fish pipx > $__fish_config_dir/completions/pipx.fish
+{{- end }}
+{{ end -}}

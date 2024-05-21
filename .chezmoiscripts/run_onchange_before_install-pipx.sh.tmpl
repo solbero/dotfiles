@@ -1,0 +1,19 @@
+{{ if and (eq .chezmoi.os "linux") (not .empheral) -}}
+
+{{ $installCommand := "dnf install -y" -}}
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudo = "" -}}
+{{ end -}}
+
+#!{{ lookPath "bash" }}
+
+set -eufo pipefail
+
+{{ if eq .osid "linux-fedora" -}}
+{{ $sudo }}{{ $installCommand }} pipx
+{{ end -}}
+
+pipx ensurepath
+{{ end -}}

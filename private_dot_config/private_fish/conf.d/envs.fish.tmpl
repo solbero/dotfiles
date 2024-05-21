@@ -3,14 +3,14 @@ set -g fish_greeting
 
 # Set default editor
 if type -q nano
-  set -gx EDITOR nano
-  set -gx VISUAL nano
+    set -gx EDITOR nano
+    set -gx VISUAL nano
 else
-  set -gx EDITOR vi
-  set -gx VISUAL vi
+    set -gx EDITOR vi
+    set -gx VISUAL vi
 end
 
-# Set bat configuration
-if type -q bat
-  set -gx BAT_THEME Dracula
+# Set fzf configuration
+if type -q fzf
+    set -gx fzf_fd_opts --hidden --max-depth 5
 end

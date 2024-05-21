@@ -1,0 +1,62 @@
+{{ if eq .chezmoi.os "linux" -}}
+
+{{ $packages := list
+     "bat"
+     "eza"
+     "fd-find"
+     "fish"
+     "fzf"
+     "git-delta"
+     "git"
+     "ripgrep"
+     "tldr"
+     "zoxide"
+-}}
+{{ $flathub := list -}}
+
+{{ if and (not .headless) (not .empheral) -}}
+{{   $packages = concat $packages (list
+       "langpacks-nb"
+       "papirus-icon-theme"
+) -}}
+{{   $flathub = concat $flathub (list
+       "org.gimp.GIMP"
+       "org.inkscape.Inkscape"
+       "io.typora.Typora"
+       )
+-}}
+{{ end -}}
+
+{{ if .personal -}}
+{{   $packages = concat $packages (list
+       "deja-dup") -}}
+{{   $flathub = concat $flathub (list
+       "com.bitwarden.desktop"
+       "com.calibre_ebook.calibre"
+       "com.dropbox.Client"
+       "com.prusa3d.PrusaSlicer"
+       "org.openscad.OpenSCAD"
+       )
+-}}
+{{ end -}}
+
+{{ $installCommand := "dnf install -y" -}}
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudo = "" -}}
+{{ end -}}
+
+#!{{ lookPath "bash" }}
+
+set -eufo pipefail
+
+# Install system packages
+{{ $sudo }}{{ $installCommand }} {{ $packages | join " " }}
+
+# Install flatpaks
+{{ if $flathub -}}
+{{ $sudo }}flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+{{ end -}}
+flatpak install -y flathub {{ $flathub | join " " }}
+{{ end -}}

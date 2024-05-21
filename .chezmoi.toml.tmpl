@@ -1,4 +1,5 @@
 {{ $headless := false -}}
+{{ $empheral := false -}}
 {{ $personal := false -}} 
 
 {{ $osid := .chezmoi.os -}}
@@ -7,12 +8,13 @@
 {{ end -}}
 
 {{ if eq .chezmoi.hostname "xps-13" -}}
-    {{ $personal = true }}
-{{ end }}
+    {{ $personal = true -}}
+{{ end -}}
 {{ $email := "njosol@pm.me" -}}
 
 [data]
   email = {{ $email | quote }}
   headless = {{ $headless }}
+  empheral = {{ $empheral }}
   personal = {{ $personal }}
   osid = {{ $osid | quote }}

@@ -1,0 +1,33 @@
+{{ if and (lookPath "gnome-shell") (and (not .headless) (not .empheral)) -}}
+
+{{ $extensions := list
+     "AlphabeticalAppGrid@stuarthayhurst"
+     "appindicatorsupport@rgcjonas.gmail.com"
+     "caffeine@patapon.info"
+     "clipboard-indicator@tudmotu.com"
+-}}
+
+#!{{ lookPath "fish" }}
+
+# Rebuild font cache
+fc-cache
+
+# Sort folders before files
+gsettings set org.gnome.nautilus.preferences default-sort-order 'type'
+gsettings set org.gtk.Settings.FileChooser sort-directories-first 'true'
+
+# Change GNOME Shell fonts
+gsettings set org.gnome.desktop.interface document-font-name 'Source Sans 3 Regular 11'
+gsettings set org.gnome.desktop.interface font-name 'Source Sans 3 Regular 11'
+gsettings set org.gnome.desktop.interface monospace-font-name 'Source Code Pro Regular 11'
+
+# Look and feel
+gsettings set org.gnome.desktop.interface clock-format '24h'
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
+
+{{ if lookPath "pipx" -}}
+pipx install gnome-extensions-cli --system-site-packages
+gext --filesystem install {{ $extensions | join " " }}
+{{ end -}}
+{{ end -}}

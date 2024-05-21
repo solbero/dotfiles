@@ -1,8 +1,0 @@
-#!/bin/fish
-
-fish_update_completions > /dev/null
-
-if type -q chezmoi
-    chezmoi completion fish --output=$__fish_config_dir/completions/chezmoi.fish
-end
-

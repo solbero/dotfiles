@@ -1,0 +1,21 @@
+{{ if .personal -}}
+
+{{ $installCommand := "dnf install -y" -}}
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudo = "" -}}
+{{ end -}}
+
+#!{{ lookPath "bash" }}
+
+set -eufo pipefail
+
+cd $(mktemp -d)
+wget "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d\  -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.1-2.noarch.rpm"
+{{ $sudo }}{{ $installCommand}} ./protonvpn-stable-release-1.0.1-2.noarch.rpm
+{{ $sudo }}{{ $installCommand}} -y --refresh proton-vpn-gnome-desktop
+
+wget "https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
+{{ $sudo }}{{ $installCommand}} ./ProtonMail-desktop-beta.rpm
+{{ end -}}
