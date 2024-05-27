@@ -1,4 +1,4 @@
-{{ if and (lookPath "gnome-shell") (and (not .headless) (not .empheral)) -}}
+{{ if and (lookPath "gnome-shell") (and (not .headless) (not .ephemeral)) -}}
 
 {{ $extensions := list
      "AlphabeticalAppGrid@stuarthayhurst"
@@ -26,6 +26,14 @@ gsettings set org.gnome.desktop.interface clock-format '24h'
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
 
+# Install Dracula theme for Gnome terminal
+set -p TEMP_PATH $(mktemp -d)
+wget -qO- https://github.com/dracula/gnome-terminal/archive/refs/heads/master.tar.gz | tar -xz -C $TEMP_PATH
+chmod +x $TEMP_PATH/gnome-terminal-master/install.sh
+$TEMP_PATH/gnome-terminal-master/install.sh -s Dracula -p profile --skip-dircolors
+rm -r $TEMP_PATH
+
+# Shell extensions
 {{ if lookPath "pipx" -}}
 pipx install gnome-extensions-cli --system-site-packages
 gext --filesystem install {{ $extensions | join " " }}

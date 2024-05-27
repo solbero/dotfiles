@@ -6,6 +6,7 @@
      "fd-find"
      "fish"
      "fzf"
+     "gh"
      "git-delta"
      "git"
      "ripgrep"
@@ -14,7 +15,7 @@
 -}}
 {{ $flathub := list -}}
 
-{{ if and (not .headless) (not .empheral) -}}
+{{ if and (not .headless) (not .ephemeral) -}}
 {{   $packages = concat $packages (list
        "langpacks-nb"
        "papirus-icon-theme"

@@ -1,11 +1,17 @@
 {{ $headless := false -}}
-{{ $empheral := false -}}
-{{ $personal := false -}} 
+{{ $ephemeral := false -}}
+{{ $personal := false -}}
 
 {{ $osid := .chezmoi.os -}}
 {{ if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
     {{ $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{ end -}}
+
+{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
+{{-   $ephemeral = true -}}
+{{-   $headless = true -}}
+{{- end -}}
 
 {{ if eq .chezmoi.hostname "xps-13" -}}
     {{ $personal = true -}}
@@ -15,6 +21,6 @@
 [data]
   email = {{ $email | quote }}
   headless = {{ $headless }}
-  empheral = {{ $empheral }}
+  ephemeral = {{ $ephemeral }}
   personal = {{ $personal }}
   osid = {{ $osid | quote }}

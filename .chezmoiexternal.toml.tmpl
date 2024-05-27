@@ -7,6 +7,14 @@
     refreshPeriod = "168h"
     include = ["*/*.nanorc"]
 
+[""]
+    type = "archive"
+    url = "https://github.com/dracula/dircolors/archive/master.zip"
+    exact = false
+    stripComponents = 1
+    refreshPeriod = "168h"
+    include = ["*/.dircolors"]
+
 {{ if not .headless -}}
 {{ $sourceCodeProVersionTag := (gitHubLatestRelease "adobe-fonts/source-code-pro").TagName -}}
 [".fonts/source-code-pro"]
@@ -43,11 +51,12 @@
     refreshPeriod = "168h"
     include = ["*/ttf/*.ttf"]
 
-[""]
+{{ $libertinusVersionTag := (gitHubLatestRelease "alerque/libertinus").TagName -}}
+[".fonts/libertinus"]
     type = "archive"
-    url = "https://github.com/dracula/dircolors/archive/master.zip"
-    exact = false
-    stripComponents = 1
+    url = "https://github.com/alerque/libertinus/releases/download/{{ $libertinusVersionTag }}/Libertinus-{{ $libertinusVersionTag | replace "v" "" }}.zip"
+    exact = true
+    stripComponents = 3
     refreshPeriod = "168h"
-    include = ["*/.dircolors"]
+    include = ["*/static/OTF/*.otf"]
 {{ end -}}
