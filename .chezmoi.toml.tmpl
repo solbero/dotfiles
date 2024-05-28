@@ -1,6 +1,8 @@
-{{ $headless := false -}}
 {{ $ephemeral := false -}}
+{{ $headless := false -}}
 {{ $personal := false -}}
+{{ $sudoCommand := "sudo " -}}
+{{ $email := "njosol@pm.me" -}}
 
 {{ $osid := .chezmoi.os -}}
 {{ if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
@@ -11,16 +13,31 @@
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
 {{-   $ephemeral = true -}}
 {{-   $headless = true -}}
-{{- end -}}
+{{ end -}}
 
 {{ if eq .chezmoi.hostname "xps-13" -}}
     {{ $personal = true -}}
 {{ end -}}
-{{ $email := "njosol@pm.me" -}}
+
+{{ $installCommand := "" -}}
+{{ if eq $osid "linux-fedora" -}}
+{{   $installCommand = "dnf install -y" -}}
+{{ end -}}
+
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudoCommand = "" -}}
+{{ end -}}
 
 [data]
-  email = {{ $email | quote }}
-  headless = {{ $headless }}
+  {{- /* Control variables */}}
   ephemeral = {{ $ephemeral }}
+  headless = {{ $headless }}
   personal = {{ $personal }}
   osid = {{ $osid | quote }}
+
+  {{- /* Command variables */}}
+  sudoCommand = {{ $sudoCommand | quote }}
+  installCommand = {{ $installCommand | quote }}
+
+  {{- /* Information variables */}}
+  email = {{ $email | quote }}

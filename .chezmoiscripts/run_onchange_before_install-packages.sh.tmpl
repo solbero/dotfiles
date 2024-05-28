@@ -29,23 +29,15 @@
 {{ end -}}
 
 {{ if .personal -}}
-{{   $packages = concat $packages (list
-       "deja-dup") -}}
 {{   $flathub = concat $flathub (list
        "com.bitwarden.desktop"
        "com.calibre_ebook.calibre"
        "com.dropbox.Client"
        "com.prusa3d.PrusaSlicer"
+       "org.gnome.World.PikaBackup"
        "org.openscad.OpenSCAD"
        )
 -}}
-{{ end -}}
-
-{{ $installCommand := "dnf install -y" -}}
-
-{{ $sudo := "sudo " -}}
-{{ if eq .chezmoi.username "root" -}}
-{{   $sudo = "" -}}
 {{ end -}}
 
 #!{{ lookPath "bash" }}
@@ -53,11 +45,11 @@
 set -eufo pipefail
 
 # Install system packages
-{{ $sudo }}{{ $installCommand }} {{ $packages | join " " }}
+{{ .sudoCommand }}{{ .installCommand }} {{ $packages | join " " }}
 
 # Install flatpaks
 {{ if $flathub -}}
-{{ $sudo }}flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+{{ .sudoCommand }}flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 {{ end -}}
 flatpak install -y flathub {{ $flathub | join " " }}
 {{ end -}}

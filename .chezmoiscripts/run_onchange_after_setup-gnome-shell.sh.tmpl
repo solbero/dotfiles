@@ -9,31 +9,31 @@
 
 #!{{ lookPath "fish" }}
 
-# Rebuild font cache
+{{/* Rebuild font cache */ -}}
 fc-cache
 
-# Sort folders before files
+{{/* Sort folders before files */ -}}
 gsettings set org.gnome.nautilus.preferences default-sort-order 'type'
 gsettings set org.gtk.Settings.FileChooser sort-directories-first 'true'
 
-# Change GNOME Shell fonts
+{{/* Change GNOME Shell fonts */ -}}
 gsettings set org.gnome.desktop.interface document-font-name 'Source Sans 3 Regular 11'
 gsettings set org.gnome.desktop.interface font-name 'Source Sans 3 Regular 11'
 gsettings set org.gnome.desktop.interface monospace-font-name 'Source Code Pro Regular 11'
 
-# Look and feel
+{{/* Look and feel */ -}}
 gsettings set org.gnome.desktop.interface clock-format '24h'
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
 
-# Install Dracula theme for Gnome terminal
+{{/* Install Dracula theme for Gnome terminal */ -}}
 set -p TEMP_PATH $(mktemp -d)
 wget -qO- https://github.com/dracula/gnome-terminal/archive/refs/heads/master.tar.gz | tar -xz -C $TEMP_PATH
 chmod +x $TEMP_PATH/gnome-terminal-master/install.sh
 $TEMP_PATH/gnome-terminal-master/install.sh -s Dracula -p profile --skip-dircolors
 rm -r $TEMP_PATH
 
-# Shell extensions
+{{/* Shell extensions */ -}}
 {{ if lookPath "pipx" -}}
 pipx install gnome-extensions-cli --system-site-packages
 gext --filesystem install {{ $extensions | join " " }}

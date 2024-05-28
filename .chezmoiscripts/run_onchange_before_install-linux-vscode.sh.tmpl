@@ -1,20 +1,13 @@
 {{ if and (eq .chezmoi.os "linux") (and (not .headless) (not .ephemeral)) -}}
 
-{{ $installCommand := "dnf install -y" -}}
-
-{{ $sudo := "sudo " -}}
-{{ if eq .chezmoi.username "root" -}}
-{{   $sudo = "" -}}
-{{ end -}}
-
 #!{{ lookPath "bash" }}
 
 set -eufo pipefail
 
 {{ if eq .osid "linux-fedora" -}}
-{{ $sudo }}rpm --import https://packages.microsoft.com/keys/microsoft.asc
-echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | {{ $sudo }}tee /etc/yum.repos.d/vscode.repo > /dev/null
+{{ .sudoCommand }}rpm --import https://packages.microsoft.com/keys/microsoft.asc
+echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | {{ .sudoCommand }}tee /etc/yum.repos.d/vscode.repo > /dev/null
 {{ end -}}
 
-{{ $sudo }}{{ $installCommand }} code
+{{ .sudoCommand }}{{ .installCommand }} code
 {{ end -}}

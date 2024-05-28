@@ -1,23 +1,16 @@
 {{ if and (eq .chezmoi.os "linux") (not .ephemeral) -}}
 
-{{ $installCommand := "dnf install -y" -}}
-
-{{ $sudo := "sudo " -}}
-{{ if eq .chezmoi.username "root" -}}
-{{   $sudo = "" -}}
-{{ end -}}
-
 #!{{ lookPath "bash" }}
 
 set -eufo pipefail
 
 {{ if eq .osid "linux-fedora" -}}
-{{ $sudo }}{{ $installCommand }} dnf-plugins-core
-{{ $sudo }}dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-{{ $sudo }}{{ $installCommand }} docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+{{ .sudoCommand }}{{ .installCommand }} dnf-plugins-core
+{{ .sudoCommand }}dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+{{ .sudoCommand }}{{ .installCommand }} docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-{{ $sudo }}usermod -aG docker {{ .chezmoi.username }}
-{{ $sudo }}systemctl enable docker.service
-{{ $sudo }}systemctl enable containerd.service
+{{ .sudoCommand }}usermod -aG docker {{ .chezmoi.username }}
+{{ .sudoCommand }}systemctl enable docker.service
+{{ .sudoCommand }}systemctl enable containerd.service
 {{- end }}
 {{ end -}}
