@@ -1,6 +1,7 @@
 [user]
 	name = solbero
 	email = {{ .email }}
+	signingKey = E6A06BD772947CD525C0E3D5E600F871F91CCDDF
 [core]
 	excludesfile = {{ .chezmoi.homeDir }}.gitignore
 	pager = delta
@@ -13,8 +14,6 @@
 	enabled = true
 	autoupdate = true
 [delta]
-	hyperlinks = true
-   	hyperlinks-file-link-format = "vscode://file/{path}:{line}"
     features = side-by-side line-numbers decorations
     minus-style = syntax "#3f0001"
     plus-style = syntax "#003800"
