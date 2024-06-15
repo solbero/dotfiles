@@ -1,7 +1,9 @@
 [user]
-	name = solbero
+	name = {{ .name }}
 	email = {{ .email }}
+{{ if .personal -}}
 	signingKey = E6A06BD772947CD525C0E3D5E600F871F91CCDDF
+{{ end -}}
 [core]
 	excludesfile = {{ .chezmoi.homeDir }}.gitignore
 	pager = delta
@@ -9,7 +11,7 @@
 [init]
 	defaultBranch = main
 [interactive]
-    diffFilter = delta --color-only --features=interactive
+	diffFilter = delta --color-only --features=interactive
 [rerere]
 	enabled = true
 	autoupdate = true

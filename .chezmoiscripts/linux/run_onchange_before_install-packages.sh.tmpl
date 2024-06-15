@@ -2,6 +2,7 @@
 
 {{ $packages := list
      "bat"
+     "eza"
      "fd-find"
      "fish"
      "fzf"
@@ -10,7 +11,6 @@
      "ripgrep"
      "tldr"
      "zoxide"
-     "pipx"
 -}}
 {{ $flathub := list -}}
 
@@ -19,6 +19,7 @@
        "langpacks-en"
        "langpacks-nb"
        "papirus-icon-theme"
+       "pipx"
 ) -}}
 {{   $flathub = concat $flathub (list
        "org.gimp.GIMP"
@@ -54,11 +55,19 @@ curl --output-dir $TEMP_PATH -O -L https://github.com/dandavison/delta/releases/
 rm -r $TEMP_PATH
 {{ end -}}
 
+{{ if eq .osid "linux-fedora" -}}
+$packages = append $packages "fish"
+{{ else if eq .osid "linux-ubuntu" -}}
+{{ .sudoCommand }}apt-add-repository ppa:fish-shell/release-3 -y
+{{ .sudoCommand }}apt update
+{{ end -}}
+
 {{ if eq .osid "linux-ubuntu" -}}
 {{ .sudoCommand }}mkdir -p /etc/apt/keyrings
 wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | {{ .sudoCommand }}gpg --dearmor -o /etc/apt/keyrings/gierens.gpg --yes
 echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | {{ .sudoCommand }}tee /etc/apt/sources.list.d/gierens.list
 {{ .sudoCommand }}chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+{{ .sudoCommand}}apt update
 {{ end -}}
 
 # Install system packages

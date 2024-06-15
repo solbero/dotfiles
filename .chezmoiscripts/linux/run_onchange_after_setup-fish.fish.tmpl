@@ -10,8 +10,10 @@ if not test -e {{ $bashrcdPath }}/fish.sh
 end
 
 {{/* Install fisher plugin manager and update plugins */ -}}
-{{ if lookPath "fisher" -}}
+{{ if not (lookPath "fisher") -}}
 curl -sL https://git.io/fisher | source && fisher update
+{{ else }}
+fisher update
 {{- end }}
 
 {{/* Update fish completions from man pages */ -}}

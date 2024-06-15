@@ -23,7 +23,7 @@
 {{ if not $ephemeral -}}
 {{   if eq .chezmoi.hostname "xps-13" -}}
 {{     $personal = true -}}
-{{   else if eq .chezmoi.hostname "zbook-fury" -}}
+{{   else if eq .chezmoi.hostname "NOLNK1320000936" -}}
 {{     $work = true -}}
 {{   else if stdinIsATTY -}}
 {{     $headless = promptBoolOnce . "headless" "headless" -}}
@@ -47,8 +47,10 @@
 {{ end -}}
 
 {{ $email := "njosol@pm.me" -}}
+{{ $name := "solbero" -}}
 {{ if $work -}}
 {{   $email = "njord.solberg@capgemini.com" -}}
+{{   $name = "Njord A. Solberg" -}}
 {{ end -}}
 
 [data]
@@ -64,4 +66,5 @@
   installCommand = {{ $installCommand | quote }}
 
   {{- /* Information variables */}}
+  name = {{ $name | quote }}
   email = {{ $email | quote }}
