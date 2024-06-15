@@ -26,9 +26,4 @@ end
 {{ if lookPath "chezmoi" -}}
 chezmoi completion fish --output=$__fish_config_dir/completions/chezmoi.fish
 {{- end }}
-
-{{/* Add pipx completions */ -}}
-{{ if lookPath "pipx" -}}
-register-python-argcomplete --shell fish pipx > $__fish_config_dir/completions/pipx.fish
-{{- end }}
 {{ end -}}

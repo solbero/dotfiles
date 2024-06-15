@@ -4,9 +4,7 @@
 
 set -eufo pipefail
 
-{{ if eq .osid "linux-fedora" -}}
 {{ $.sudoCommand }}{{ .installCommand }} pipx
-{{ end -}}
 
 pipx ensurepath
 {{ end -}}

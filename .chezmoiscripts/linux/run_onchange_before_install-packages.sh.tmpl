@@ -2,16 +2,15 @@
 
 {{ $packages := list
      "bat"
-     "eza"
      "fd-find"
      "fish"
      "fzf"
      "gh"
-     "git-delta"
      "git"
      "ripgrep"
      "tldr"
      "zoxide"
+     "pipx"
 -}}
 {{ $flathub := list -}}
 
@@ -45,12 +44,31 @@
 
 set -eufo pipefail
 
+{{ if eq .osid "linux-fedora" -}}
+$packages = append $packages "git-delta"
+{{ else if eq .osid "linux-ubuntu" -}}
+{{ $gitdeltaVersionTag := (gitHubLatestRelease "dandavison/delta").TagName -}}
+TEMP_PATH=$(mktemp -d)
+curl --output-dir $TEMP_PATH -O -L https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+{{ .sudoCommand }}apt install $TEMP_PATH/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+rm -r $TEMP_PATH
+{{ end -}}
+
+{{ if eq .osid "linux-ubuntu" -}}
+{{ .sudoCommand }}mkdir -p /etc/apt/keyrings
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | {{ .sudoCommand }}gpg --dearmor -o /etc/apt/keyrings/gierens.gpg --yes
+echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | {{ .sudoCommand }}tee /etc/apt/sources.list.d/gierens.list
+{{ .sudoCommand }}chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+{{ end -}}
+
 # Install system packages
 {{ .sudoCommand }}{{ .installCommand }} {{ $packages | join " " }}
 
+{{ if eq .osid "linux-fedora" -}}
 # Install flatpaks
 {{ if $flathub -}}
 {{ .sudoCommand }}flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 {{ end -}}
 flatpak install -y flathub {{ $flathub | join " " }}
+{{ end -}}
 {{ end -}}

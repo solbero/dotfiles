@@ -4,10 +4,6 @@
 {{ $personal := false -}}
 {{ $work := false -}}
 
-{{- /* Set default command variables */ -}}
-{{ $sudoCommand := "sudo " -}}
-{{ $email := "njosol@pm.me" -}}
-
 {{ $osid := .chezmoi.os -}}
 {{ if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
     {{ $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
@@ -25,9 +21,9 @@
 {{ end -}}
 
 {{ if not $ephemeral -}}
-{{   if eq $hostname "xps-13" -}}
+{{   if eq .chezmoi.hostname "xps-13" -}}
 {{     $personal = true -}}
-{{   else if eq $hostname "zbook-legion" -}}
+{{   else if eq .chezmoi.hostname "zbook-fury" -}}
 {{     $work = true -}}
 {{   else if stdinIsATTY -}}
 {{     $headless = promptBoolOnce . "headless" "headless" -}}
@@ -42,11 +38,17 @@
 {{ if eq $osid "linux-fedora" -}}
 {{   $installCommand = "dnf install -y" -}}
 {{ else if eq $osid "linux-ubuntu" -}}
-{{   $$installCommand = "apt install -y" -}}
+{{   $installCommand = "apt install -y" -}}
 {{ end -}}
 
+{{ $sudoCommand := "sudo " -}}
 {{ if eq .chezmoi.username "root" -}}
 {{   $sudoCommand = "" -}}
+{{ end -}}
+
+{{ $email := "njosol@pm.me" -}}
+{{ if $work -}}
+{{   $email = "njord.solberg@capgemini.com" -}}
 {{ end -}}
 
 [data]
@@ -54,6 +56,7 @@
   ephemeral = {{ $ephemeral }}
   headless = {{ $headless }}
   personal = {{ $personal }}
+  work = {{ $work }}
   osid = {{ $osid | quote }}
 
   {{- /* Command variables */}}
