@@ -17,6 +17,7 @@
 
 {{ if and (not .headless) (not .ephemeral) -}}
 {{   $packages = concat $packages (list
+       "langpacks-en"
        "langpacks-nb"
        "papirus-icon-theme"
 ) -}}
@@ -25,19 +26,19 @@
        "org.inkscape.Inkscape"
        )
 -}}
-{{ end -}}
-
-{{ if .personal -}}
-{{   $flathub = concat $flathub (list
-       "com.bitwarden.desktop"
-       "com.calibre_ebook.calibre"
-       "com.dropbox.Client"
-       "com.prusa3d.PrusaSlicer"
-       "org.gnome.World.PikaBackup"
-       "org.openscad.OpenSCAD"
-       "io.typora.Typora"
+{{   if .personal -}}
+{{     $flathub = concat $flathub (list
+         "com.bitwarden.desktop"
+         "com.calibre_ebook.calibre"
+         "com.dropbox.Client"
+         "com.prusa3d.PrusaSlicer"
+         "de.haeckerfelix.Fragments"
+         "io.typora.Typora"
+         "org.gnome.World.PikaBackup"
+         "org.openscad.OpenSCAD"
        )
 -}}
+{{   end -}}
 {{ end -}}
 
 #!{{ lookPath "bash" }}
