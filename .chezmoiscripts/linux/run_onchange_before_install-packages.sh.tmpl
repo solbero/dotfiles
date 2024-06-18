@@ -46,18 +46,16 @@
 set -eufo pipefail
 
 {{ if eq .osid "linux-fedora" -}}
-$packages = append $packages "git-delta"
+{{   $packages = append $packages "git-delta" -}}
 {{ else if eq .osid "linux-ubuntu" -}}
-{{ $gitdeltaVersionTag := (gitHubLatestRelease "dandavison/delta").TagName -}}
-TEMP_PATH=$(mktemp -d)
-curl --output-dir $TEMP_PATH -O -L https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
-{{ .sudoCommand }}apt install $TEMP_PATH/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
-rm -r $TEMP_PATH
+{{   $gitdeltaVersionTag := (gitHubLatestRelease "dandavison/delta").TagName -}}
+{{   $tempPath := output "mktemp" "-d" | trim }}
+curl --output-dir {{ $tempPath }} -O -L https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+{{ .sudoCommand }}apt install {{ $tempPath }}/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+rm -r {{ $tempPath }}
 {{ end -}}
 
-{{ if eq .osid "linux-fedora" -}}
-$packages = append $packages "fish"
-{{ else if eq .osid "linux-ubuntu" -}}
+{{ if eq .osid "linux-ubuntu" -}}
 {{ .sudoCommand }}apt-add-repository ppa:fish-shell/release-3 -y
 {{ .sudoCommand }}apt update
 {{ end -}}
