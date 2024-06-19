@@ -2,6 +2,11 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+if type -q code
+    string match -q "$TERM_PROGRAM" "vscode"
+    and . (code --locate-shell-integration-path fish)
+end
+
 # Source zoxide
 if type -q zoxide
     zoxide init fish | source

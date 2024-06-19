@@ -8,26 +8,30 @@
      "fzf"
      "gh"
      "git"
+     "httpie"
+     "jq"
      "ripgrep"
      "tldr"
      "zoxide"
 -}}
-{{ $flathub := list -}}
+{{ $flatpak_packages := list -}}
 
+{{ if not .ephemeral -}}
+{{   $packages = append $packages "pipx" -}}
+{{ end -}}
 {{ if and (not .headless) (not .ephemeral) -}}
 {{   $packages = concat $packages (list
        "langpacks-en"
        "langpacks-nb"
        "papirus-icon-theme"
-       "pipx"
 ) -}}
-{{   $flathub = concat $flathub (list
+{{   $flatpak_packages = concat $flatpak_packages (list
        "org.gimp.GIMP"
        "org.inkscape.Inkscape"
        )
 -}}
 {{   if .personal -}}
-{{     $flathub = concat $flathub (list
+{{     $flatpak_packages = concat $flatpak_packages (list
          "com.bitwarden.desktop"
          "com.calibre_ebook.calibre"
          "com.dropbox.Client"
@@ -45,37 +49,13 @@
 
 set -eufo pipefail
 
-{{ if eq .osid "linux-fedora" -}}
-{{   $packages = append $packages "git-delta" -}}
-{{ else if eq .osid "linux-ubuntu" -}}
-{{   $gitdeltaVersionTag := (gitHubLatestRelease "dandavison/delta").TagName -}}
-{{   $tempPath := output "mktemp" "-d" | trim }}
-curl --output-dir {{ $tempPath }} -O -L https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
-{{ .sudoCommand }}apt install {{ $tempPath }}/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
-rm -r {{ $tempPath }}
-{{ end -}}
-
-{{ if eq .osid "linux-ubuntu" -}}
-{{ .sudoCommand }}apt-add-repository ppa:fish-shell/release-3 -y
-{{ .sudoCommand }}apt update
-{{ end -}}
-
-{{ if eq .osid "linux-ubuntu" -}}
-{{ .sudoCommand }}mkdir -p /etc/apt/keyrings
-wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | {{ .sudoCommand }}gpg --dearmor -o /etc/apt/keyrings/gierens.gpg --yes
-echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | {{ .sudoCommand }}tee /etc/apt/sources.list.d/gierens.list
-{{ .sudoCommand }}chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-{{ .sudoCommand}}apt update
-{{ end -}}
-
-# Install system packages
 {{ .sudoCommand }}{{ .installCommand }} {{ $packages | join " " }}
 
 {{ if eq .osid "linux-fedora" -}}
-# Install flatpaks
-{{ if $flathub -}}
+{{ if $flatpak_packages -}}
 {{ .sudoCommand }}flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub {{ $flatpak_packages | join " " }}
 {{ end -}}
-flatpak install -y flathub {{ $flathub | join " " }}
 {{ end -}}
+
 {{ end -}}

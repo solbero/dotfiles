@@ -1,0 +1,17 @@
+{{ if eq .chezmoi.os "linux" -}}
+
+#!{{ lookPath "bash" }}
+
+set -eufo pipefail
+
+{{ if eq .osid "linux-ubuntu" -}}
+{{ $gitdeltaVersionTag := (gitHubLatestRelease "dandavison/delta").TagName -}}
+{{ $tempPath := output "mktemp" "-d" | trim -}}
+curl --output-dir {{ $tempPath }} -O -L https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+{{ .sudoCommand }}apt install {{ $tempPath }}/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+rm -r {{ $tempPath }}
+{{ else }}
+{{ .sudoCommand }}{{ .installCommand }} git-delta
+{{ end -}}
+
+{{ end -}}

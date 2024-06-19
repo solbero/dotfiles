@@ -8,9 +8,9 @@ set -eufo pipefail
 {{ .sudoCommand }}{{ .installCommand }} dnf-plugins-core
 {{ .sudoCommand }}dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 {{ .sudoCommand }}{{ .installCommand }} docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
 {{ .sudoCommand }}usermod -aG docker {{ .chezmoi.username }}
 {{ .sudoCommand }}systemctl enable docker.service
 {{ .sudoCommand }}systemctl enable containerd.service
-{{- end }}
+{{ end -}}
+
 {{ end -}}

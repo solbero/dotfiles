@@ -1,0 +1,17 @@
+{{ if eq .chezmoi.os "linux" -}}
+
+#!{{ lookPath "bash" }}
+
+set -eufo pipefail
+
+{{ if eq .osid "linux-ubuntu" -}}
+{{ .sudoCommand }}mkdir -p /etc/apt/keyrings
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | {{ .sudoCommand }}gpg --dearmor -o /etc/apt/keyrings/gierens.gpg --yes
+echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | {{ .sudoCommand }}tee /etc/apt/sources.list.d/gierens.list
+{{ .sudoCommand }}chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+{{ .sudoCommand}}apt update
+{{ end -}}
+
+{{ .sudoCommand }}{{ .installCommand }} eza
+
+{{ end -}}

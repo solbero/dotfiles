@@ -4,18 +4,16 @@
 
 set -eufo pipefail
 
-TEMP_PATH=$(mktemp -d)
+{{ $tempPath := output "mktemp" "-d" | trim -}}
 
-{{ if not (lookPath "protonvpn-app") -}}
-wget "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d\  -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.1-2.noarch.rpm"
-{{.sudoCommand}}{{ .installCommand}} $TEMP_PATH/protonvpn-stable-release-1.0.1-2.noarch.rpm
+{{ if eq .osid "fedora-linux" -}}
+wget -P {{ $tempPath }} "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d\  -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.1-2.noarch.rpm"
+{{.sudoCommand}}{{ .installCommand}} {{ $tempPath }}/protonvpn-stable-release-1.0.1-2.noarch.rpm
 {{.sudoCommand}}{{ .installCommand}} -y --refresh proton-vpn-gnome-desktop
-{{- end }}
 
-{{ if not (lookPath "proton-mail") -}}
-wget "https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
+wget -P {{ $tempPath }} "https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
 {{.sudoCommand}}{{ .installCommand}} $TEMP_PATH/ProtonMail-desktop-beta.rpm
+rm -r {{ $tempPath }}
 {{- end }}
 
-rm -r $TEMP_PATH
 {{ end -}}
