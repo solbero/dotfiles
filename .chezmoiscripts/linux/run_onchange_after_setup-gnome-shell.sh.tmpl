@@ -1,5 +1,6 @@
-{{ if and (lookPath "gnome-shell") (and (not .headless) (not .ephemeral)) -}}
+{{ if and (eq .chezmoi.os "linux") (lookPath "gnome-shell") -}}
 
+{{/* List of GNOME Extensions to install */ -}}
 {{ $extensions := list
      "AlphabeticalAppGrid@stuarthayhurst"
      "appindicatorsupport@rgcjonas.gmail.com"
@@ -15,7 +16,7 @@ set -eufo pipefail
 {{/* Rebuild font cache */ -}}
 fc-cache
 
-{{/* Sort folders before files */ -}}
+{{/* Sort folders before files in Files */ -}}
 gsettings set org.gnome.nautilus.preferences default-sort-order 'type'
 gsettings set org.gtk.Settings.FileChooser sort-directories-first 'true'
 
@@ -24,7 +25,7 @@ gsettings set org.gnome.desktop.interface document-font-name 'Source Sans 3 Regu
 gsettings set org.gnome.desktop.interface font-name 'Source Sans 3 Regular 11'
 gsettings set org.gnome.desktop.interface monospace-font-name 'Source Code Pro Regular 11'
 
-{{/* Look and feel */ -}}
+{{/* General look and feel */ -}}
 gsettings set org.gnome.desktop.interface clock-format '24h'
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
@@ -32,11 +33,11 @@ gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
 {{/* Install Dracula theme for Gnome terminal */ -}}
 {{ $tempPath := output "mktemp" "-d" | trim -}}
 wget -P {{ $tempPath }} -qO- https://github.com/dracula/gnome-terminal/archive/refs/heads/master.tar.gz | tar -xz -C {{ $tempPath }}
-chmod +x $TEMP_PATH/gnome-terminal-master/install.sh
+chmod +x {{ $tempPath }}/gnome-terminal-master/install.sh
 {{ $tempPath }}/gnome-terminal-master/install.sh -s Dracula -p profile --skip-dircolors
 rm -r {{ $tempPath }}
 
-{{/* Shell extensions */ -}}
+{{/* Install shell extensions */ -}}
 {{ if lookPath "pipx" -}}
 pipx install gnome-extensions-cli --system-site-packages
 gext --filesystem install {{ $extensions | join " " }}

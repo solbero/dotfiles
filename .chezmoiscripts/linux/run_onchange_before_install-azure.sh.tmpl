@@ -1,0 +1,12 @@
+{{ if and (eq .chezmoi.os "linux") (.work) -}}
+
+#!{{ lookPath "bash" }}
+
+set -eufo pipefail
+
+{{/* Install Azure CLI using the official install script from Microsoft */ -}}
+{{ if eq .osid "fedora-ubuntu" -}}
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+{{- end }}
+
+{{ end -}}

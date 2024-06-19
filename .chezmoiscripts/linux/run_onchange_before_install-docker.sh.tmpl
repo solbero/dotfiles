@@ -4,6 +4,7 @@
 
 set -eufo pipefail
 
+{{/* Add the correct docker repository for distribution */ -}}
 {{ if eq .osid "linux-fedora" -}}
 {{ .sudoCommand }}{{ .installCommand }} dnf-plugins-core
 {{ .sudoCommand }}dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo

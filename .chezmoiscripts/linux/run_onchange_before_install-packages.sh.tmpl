@@ -6,7 +6,6 @@
      "fd-find"
      "fish"
      "fzf"
-     "gh"
      "git"
      "httpie"
      "jq"
@@ -17,8 +16,12 @@
 {{ $flatpak_packages := list -}}
 
 {{ if not .ephemeral -}}
-{{   $packages = append $packages "pipx" -}}
+{{   $packages = concat $packages (list
+       "pipx"
+       "gh"
+) -}}
 {{ end -}}
+
 {{ if and (not .headless) (not .ephemeral) -}}
 {{   $packages = concat $packages (list
        "langpacks-en"
@@ -30,19 +33,21 @@
        "org.inkscape.Inkscape"
        )
 -}}
-{{   if .personal -}}
-{{     $flatpak_packages = concat $flatpak_packages (list
-         "com.bitwarden.desktop"
-         "com.calibre_ebook.calibre"
-         "com.dropbox.Client"
-         "com.prusa3d.PrusaSlicer"
-         "de.haeckerfelix.Fragments"
-         "io.typora.Typora"
-         "org.gnome.World.PikaBackup"
-         "org.openscad.OpenSCAD"
+{{ end -}}
+
+
+{{ if .personal -}}
+{{ $flatpak_packages = concat $flatpak_packages (list
+     "com.bitwarden.desktop"
+     "com.calibre_ebook.calibre"
+     "com.dropbox.Client"
+     "com.prusa3d.PrusaSlicer"
+     "de.haeckerfelix.Fragments"
+     "io.typora.Typora"
+     "org.gnome.World.PikaBackup"
+     "org.openscad.OpenSCAD"
        )
 -}}
-{{   end -}}
 {{ end -}}
 
 #!{{ lookPath "bash" }}
@@ -51,11 +56,9 @@ set -eufo pipefail
 
 {{ .sudoCommand }}{{ .installCommand }} {{ $packages | join " " }}
 
-{{ if eq .osid "linux-fedora" -}}
-{{ if $flatpak_packages -}}
+{{ if and (eq .osid "linux-fedora") ($flatpak_packages) -}}
 {{ .sudoCommand }}flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install -y flathub {{ $flatpak_packages | join " " }}
-{{ end -}}
 {{ end -}}
 
 {{ end -}}

@@ -4,6 +4,7 @@
 
 set -eufo pipefail
 
+{{/* Add repository to package manager */ -}}
 {{ if eq .osid "linux-ubuntu" -}}
 {{ .sudoCommand }}apt-add-repository ppa:fish-shell/release-3 -y
 {{ .sudoCommand }}apt update

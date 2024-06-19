@@ -4,6 +4,7 @@
 
 set -eufo pipefail
 
+{{/* Add third-party repository to package manager */ -}}
 {{ if eq .osid "linux-ubuntu" -}}
 {{ .sudoCommand }}mkdir -p /etc/apt/keyrings
 wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | {{ .sudoCommand }}gpg --dearmor -o /etc/apt/keyrings/gierens.gpg --yes
