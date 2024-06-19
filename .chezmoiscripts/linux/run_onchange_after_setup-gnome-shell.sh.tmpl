@@ -32,7 +32,7 @@ gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
 
 {{/* Install Dracula theme for Gnome terminal */ -}}
 {{ $tempPath := output "mktemp" "-d" | trim -}}
-wget -P {{ $tempPath }} -qO- https://github.com/dracula/gnome-terminal/archive/refs/heads/master.tar.gz | tar -xz -C {{ $tempPath }}
+wget -qO- https://github.com/dracula/gnome-terminal/archive/refs/heads/master.tar.gz | tar xz -C {{ $tempPath }}
 chmod +x {{ $tempPath }}/gnome-terminal-master/install.sh
 {{ $tempPath }}/gnome-terminal-master/install.sh -s Dracula -p profile --skip-dircolors
 rm -r {{ $tempPath }}

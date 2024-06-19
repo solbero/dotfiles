@@ -10,6 +10,7 @@
      "httpie"
      "jq"
      "ripgrep"
+     "sd"
      "tldr"
      "zoxide"
 -}}
@@ -17,8 +18,8 @@
 
 {{ if not .ephemeral -}}
 {{   $packages = concat $packages (list
-       "pipx"
        "gh"
+       "pipx"
 ) -}}
 {{ end -}}
 

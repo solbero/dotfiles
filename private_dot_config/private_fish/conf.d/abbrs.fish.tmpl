@@ -1,21 +1,16 @@
-{{ $sudo := "sudo " -}}
-{{ if eq .chezmoi.username "root" -}}
-{{   $sudo = "" -}}
-{{ end -}}
-
 # dnf
 if type -q dnf
-    abbr dnfi '{{ $sudo }}dnf install'
-    abbr dnfr '{{ $sudo }}dnf remove'
-    abbr dnfu '{{ $sudo }}dnf update'
+    abbr dnfi '{{ .sudoCommand }}dnf install'
+    abbr dnfr '{{ .sudoCommand }}dnf remove'
+    abbr dnfu '{{ .sudoCommand }}dnf update'
 end
 
 # apt
 if type -q apt
-    abbr apti '{{ $sudo }}apt install'
-    abbr aptr '{{ $sudo }}apt remove'
-    abbr dnfupd '{{ $sudo }}apt update'
-    abbr dnfupg '{{ $sudo }}apt upgrade'
+    abbr apti '{{ .sudoCommand }}apt install'
+    abbr aptr '{{ .sudoCommand }}apt remove'
+    abbr dnfupd '{{ .sudoCommand }}apt update'
+    abbr dnfupg '{{ .sudoCommand }}apt upgrade'
 end
 
 # chezmoi

@@ -7,11 +7,11 @@ set -eufo pipefail
 {{ if eq .osid "fedora-linux" -}}
 {{ $tempPath := output "mktemp" "-d" | trim -}}
 wget -P {{ $tempPath }} "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d\  -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.1-2.noarch.rpm"
-{{.sudoCommand}}{{ .installCommand}} {{ $tempPath }}/protonvpn-stable-release-1.0.1-2.noarch.rpm
-{{.sudoCommand}}{{ .installCommand}} --refresh proton-vpn-gnome-desktop
+{{ .sudoCommand }}{{ .installCommand}} {{ $tempPath }}/protonvpn-stable-release-1.0.1-2.noarch.rpm
+{{ .sudoCommand }}{{ .installCommand}} --refresh proton-vpn-gnome-desktop
 
 wget -P {{ $tempPath }} "https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
-{{.sudoCommand}}{{ .installCommand}} {{ $tempPath }}/ProtonMail-desktop-beta.rpm
+{{ .sudoCommand }}{{ .installCommand}} {{ $tempPath }}/ProtonMail-desktop-beta.rpm
 rm -r {{ $tempPath }}
 {{- end }}
 
