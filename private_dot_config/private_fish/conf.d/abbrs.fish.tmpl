@@ -10,6 +10,14 @@ if type -q dnf
     abbr dnfu '{{ $sudo }}dnf update'
 end
 
+# apt
+if type -q apt
+    abbr apti '{{ $sudo }}apt install'
+    abbr aptr '{{ $sudo }}apt remove'
+    abbr dnfupd '{{ $sudo }}apt update'
+    abbr dnfupg '{{ $sudo }}apt upgrade'
+end
+
 # chezmoi
 if type -q chezmoi
     abbr c 'chezmoi'
@@ -60,6 +68,17 @@ end
 
 # dotnet
 if type -q dotnet
+    abbr da 'dotnet add'
     abbr db 'dotnet build'
+    abbr dbs 'dotnet build-server'
+    abbr dcl 'dotnet clean'
+    abbr dfmt 'dotnet format'
+    abbr dls 'dotnet list'
+    abbr dn 'dotnet new'
+    abbr dnu 'dotnet nuget'
     abbr dr 'dotnet run'
+    abbr dre 'dotnet restore'
+    abbr drm 'dotnet remove'
+    abbr dt 'dotnet test'
+    abbr dw 'dotnet watch'
 end
