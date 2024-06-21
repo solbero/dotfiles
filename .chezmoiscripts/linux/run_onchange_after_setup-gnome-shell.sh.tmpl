@@ -31,11 +31,11 @@ gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
 
 {{/* Install Dracula theme for Gnome terminal */ -}}
-{{ $tempPath := output "mktemp" "-d" | trim -}}
-wget -qO- https://github.com/dracula/gnome-terminal/archive/refs/heads/master.tar.gz | tar xz -C {{ $tempPath }}
-chmod +x {{ $tempPath }}/gnome-terminal-master/install.sh
-{{ $tempPath }}/gnome-terminal-master/install.sh -s Dracula -p profile --skip-dircolors
-rm -r {{ $tempPath }}
+TEMP_PATH=$(mktemp -d)
+wget -qO- https://github.com/dracula/gnome-terminal/archive/refs/heads/master.tar.gz | tar xz -C $TEMP_PATH
+chmod +x $TEMP_PATH/gnome-terminal-master/install.sh
+$TEMP_PATH/gnome-terminal-master/install.sh -s Dracula -p profile --skip-dircolors
+rm -r $TEMP_PATH
 
 {{/* Install shell extensions */ -}}
 {{ if lookPath "pipx" -}}

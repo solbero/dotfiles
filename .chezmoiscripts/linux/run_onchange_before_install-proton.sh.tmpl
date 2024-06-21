@@ -5,14 +5,14 @@
 set -eufo pipefail
 
 {{ if eq .osid "fedora-linux" -}}
-{{ $tempPath := output "mktemp" "-d" | trim -}}
-wget -P {{ $tempPath }} "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d\  -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.1-2.noarch.rpm"
-{{ .sudoCommand }}{{ .installCommand}} {{ $tempPath }}/protonvpn-stable-release-1.0.1-2.noarch.rpm
+TEMP_PATH=$(mktemp -d)
+wget -P $TEMP_PATH "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d\  -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.1-2.noarch.rpm"
+{{ .sudoCommand }}{{ .installCommand}} $TEMP_PATH/protonvpn-stable-release-1.0.1-2.noarch.rpm
 {{ .sudoCommand }}{{ .installCommand}} --refresh proton-vpn-gnome-desktop
 
-wget -P {{ $tempPath }} "https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
-{{ .sudoCommand }}{{ .installCommand}} {{ $tempPath }}/ProtonMail-desktop-beta.rpm
-rm -r {{ $tempPath }}
+wget -P $TEMP_PATH "https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
+{{ .sudoCommand }}{{ .installCommand}} $TEMP_PATH/ProtonMail-desktop-beta.rpm
+rm -r $TEMP_PATH
 {{- end }}
 
 {{ end -}}

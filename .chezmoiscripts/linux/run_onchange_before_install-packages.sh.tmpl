@@ -51,6 +51,13 @@
 -}}
 {{ end -}}
 
+{{ if .work -}}
+{{ $packages = concat $flatpak_packages (list
+     "wslu"
+       )
+-}}
+{{ end -}}
+
 #!{{ lookPath "bash" }}
 
 set -eufo pipefail

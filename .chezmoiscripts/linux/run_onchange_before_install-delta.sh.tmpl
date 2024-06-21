@@ -7,10 +7,10 @@ set -eufo pipefail
 {{/* Download and install .deb package for Ubuntu */ -}}
 {{ if eq .osid "linux-ubuntu" -}}
 {{ $gitdeltaVersionTag := (gitHubLatestRelease "dandavison/delta").TagName -}}
-{{ $tempPath := output "mktemp" "-d" | trim -}}
-curl --output-dir {{ $tempPath }} -O -L https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
-{{ .sudoCommand }}apt install {{ $tempPath }}/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
-rm -r {{ $tempPath }}
+TEMP_PATH=$(mktemp -d)
+curl --output-dir $TEMP_PATH -OL https://github.com/dandavison/delta/releases/download/0.17.0/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+{{ .sudoCommand }}{{ .installCommand }} $TEMP_PATH/git-delta_{{ $gitdeltaVersionTag }}_amd64.deb
+rm -r $TEMP_PATH
 
 {{- /* Otherwise, use the package manager */ -}}
 {{ else -}}
