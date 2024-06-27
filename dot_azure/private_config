@@ -1,0 +1,9 @@
+[cloud]
+name = AzureCloud
+
+[core]
+first_run = yes
+
+[auto-upgrade]
+enable = yes
+
