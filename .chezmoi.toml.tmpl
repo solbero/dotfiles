@@ -23,7 +23,7 @@
 {{ if not $ephemeral -}}
 {{   if eq .chezmoi.hostname "xps-13" -}}
 {{     $personal = true -}}
-{{   else if eq .chezmoi.hostname "NOLNK1320000936" -}}
+{{   else if eq .chezmoi.hostname "zbook-fury" -}}
 {{     $work = true -}}
 {{   else if stdinIsATTY -}}
 {{     $headless = promptBoolOnce . "headless" "headless" -}}
