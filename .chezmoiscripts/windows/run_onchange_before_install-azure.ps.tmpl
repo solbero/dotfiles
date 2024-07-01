@@ -1,0 +1,6 @@
+{{ if and (eq .chezmoi.os "windows") (.work) -}}
+
+{{/* Install Azure CLI */ -}}
+winget install -e --id Microsoft.AzureCLI
+
+{{ end -}}

@@ -1,8 +1,8 @@
 {{/* Set default control variables */ -}}
-{{ $ephemeral := false -}}
 {{ $headless := false -}}
 {{ $personal := false -}}
 {{ $work := false -}}
+{{ $wsl := false -}}
 
 {{ $osid := .chezmoi.os -}}
 {{ if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
@@ -11,28 +11,24 @@
 
 {{/* Detect if running in GitHub Codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */ -}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
-{{-   $ephemeral = true -}}
 {{-   $headless = true -}}
 {{- end -}}
 
 {{/* Detect if running inside Windows Subsystem for Linux (WSL) */ -}}
 {{ if env "WSL_DISTRO_NAME" }}
-{{   $headless = true -}}
+{{   $wsl = true -}}
 {{ end -}}
 
-{{ if not $ephemeral -}}
-{{   if eq .chezmoi.hostname "xps-13" -}}
-{{     $personal = true -}}
-{{   else if eq .chezmoi.hostname "zbook-fury" -}}
-{{     $work = true -}}
-{{   else if stdinIsATTY -}}
-{{     $headless = promptBoolOnce . "headless" "headless" -}}
-{{     $ephemeral = promptBoolOnce . "ephemeral" "ephemeral" -}}
+{{ if eq .chezmoi.hostname "xps-13" -}}
+{{   $personal = true -}}
+{{ else if eq .chezmoi.hostname "zbook-fury" -}}
+{{   $work = true -}}
+{{ else if stdinIsATTY -}}
+{{   $headless = promptBoolOnce . "headless" "headless" -}}
 {{ else -}}
-{{     $ephemeral = true -}}
-{{     $headless = true -}}
-{{   end -}}
-{{ end -}}
+{{   $headless = true -}}
+{{  end -}}
+
 
 {{ $installCommand := "" -}}
 {{ if eq $osid "linux-fedora" -}}
@@ -55,7 +51,6 @@
 
 [data]
   {{- /* Control variables */}}
-  ephemeral = {{ $ephemeral }}
   headless = {{ $headless }}
   personal = {{ $personal }}
   work = {{ $work }}

@@ -16,18 +16,13 @@
 -}}
 {{ $flatpak_packages := list -}}
 
-{{ if not .ephemeral -}}
+{{ if and (not .headless) -}}
 {{   $packages = concat $packages (list
        "gh"
-       "pipx"
-) -}}
-{{ end -}}
-
-{{ if and (not .headless) (not .ephemeral) -}}
-{{   $packages = concat $packages (list
        "langpacks-en"
        "langpacks-nb"
        "papirus-icon-theme"
+       "pipx"
 ) -}}
 {{   $flatpak_packages = concat $flatpak_packages (list
        "org.gimp.GIMP"

@@ -1,3 +1,14 @@
-{{- if not .work }}
-.azure
-{{- end }}
+{{ if ne .chezmoi.os "linux" -}}
+.azure/**
+.bashrd.d/**
+.chezmoiscripts/linux/**
+.config/fish/**
+.gnupg/**
+.bashrc
+.hushlogin
+.nanorc
+{{ end -}}
+
+{{ if eq .chezmoi.os "windows" -}}
+.chezmoiscripts/windows/**
+{{ end -}}
